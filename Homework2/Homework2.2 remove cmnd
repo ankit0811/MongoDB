@@ -1,0 +1,17 @@
+//2.2 Removing multiple entries
+
+var del=db.grades.aggregate({$match:{type:"homework"}},{$group:{"_id":{student_id:"$student_id",type:"$type"},min:{$min:"$score"}}}).toArray()
+
+for (i in del) { 
+db.grades.remove({student_id:del[i]._id.student_id,type:del[i]._id.type,score:del[i].min})
+}
+
+//2.4 Loading videos.movieDetails DB
+mongorestore -d video -c movieDetails Homework2\creating_documents\dump\video\movieDetails.bson
+    //Find the requested entries
+    db.movieDetails.find({"year":2013,"rated":"PG-13","awards.wins":0},{"title":1,"_id":0,"awards":1})
+
+//2.5 COunting elements where second country=Sweden
+db.movieDetails.find({"countries.1":"Sweden"},{"title":1,"countries":1}).count()
+    
+    
